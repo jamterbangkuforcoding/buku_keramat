@@ -17,7 +17,7 @@ MENGGUNAKAN RESOURCE CONTROLLER
 =========================================================================================================================================================
 use App\Http\Controllers\SiswaControler;
 
-Route::resource('/siswa',SiswaController::class);
+Route::resource('/siswa',SiswaController::class); -> satu untuk CRUD ;)
 
 
 3. READ
@@ -31,6 +31,8 @@ Route::resource('/siswa',SiswaController::class);
            <td> {{ $data->nama }} </td>
     @endforeach
     
+=========================================================================================================================================================
+    
     
 4. SHOW
     
@@ -41,6 +43,9 @@ Route::resource('/siswa',SiswaController::class);
         }
     <h2> $siswa->nama </h2>
     <p> $siswa->alamat </p>
+    
+    
+=========================================================================================================================================================
     
 5. DELETE
     
@@ -53,7 +58,133 @@ Route::resource('/siswa',SiswaController::class);
         Siswa::destroy($siswa->id);
         return redirect('/siswa)->with('success','data berhasil dihapus');
         
-6. TAMBAH        
+        
+=========================================================================================================================================================
+        
+        
+6. TAMBAH       
+
+   href="/siswa/create"
+   
+   ...create(){
+   return view('createsiswa');
+   }
+   
+   
+   <form action="/siswa" method="post" enctype="multipart/form-data"
+   @csrf
+   - name=""
+   - submit
+   
+   ...store(Request $request){
+   $validasiData = $request->validate([
+   
+   'nis' => 'required|unique:siswas',
+   'nama' => 'required|min:3|max:255'   
+   ]);
+   
+   Siswa::create($validasiData);
+   return redirect('/siswa)->with('','');
+   
+   }
+ 
+========================================================================================================================================================= 
+   
+   
+7. UBAH
+   
+   href="/siswa/{{ $data->id }}/edit"
+   
+   ...edit( Siswa $siswa ){
+   return view('editsiswa',['siswa'=>$siswa]);
+   }
+   
+   <form action="/$iswa/{{ $siswa->id }}" method="post" enctype="multipart/form-data 
+   @csrf
+   @method('put')
+   
+   name=""
+   value="{{ $siswa->nama }}"
+   
+   ...update(Request $request, Siswa $siswa){
+   
+   $validasiData = $request->validate([
+   'nama' => 'required',
+   'alamat' => 'required'
+   ]);
+   
+   Siswa::where('id',$siswa->id)->update($validasiData);
+   return redirect('/siswa)->with('','');
+   
+   }
+   
+=========================================================================================================================================================
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
     
     
     
