@@ -1,0 +1,62 @@
+MENGGUNAKAN RESOURCE CONTROLLER
+1. PHP ARTISAN
+  - php artisan serve (untuk menjalankan  laravel)
+  - php artisan make:model -m NamaModel (membuat model sekaligus dengan tablenya)
+  - php artisan make:controller NamaController --resource --model=NamaModel
+  - php artisan migrate (Untuk memasukan tabel kedatabase kita)
+  - php artisa migrate:fresh (untuk memasukan tabel yang baru atau menyimpan perubaha kedalam database kita)
+  - php artisan storage:link (untuk menghubungkan sotorage ke public, biar gambar kita bisa di akses)
+  
+2. CONFIGURASI
+  - database -> migration (tempat tabel kita)
+  - config -> filesystem (untuk engubah folder gaembar kita ke public) -> FILESYSTEM_DISK=public di .env
+  - Middleware\Authenticate 'login'
+  - Providers\RouteServicesProvider -> /home
+  - use Illuminate\Support\Facades\Auth; -> unutk login
+  - use Illuminate\Support\Facades\Storage; untuk storage gambar di controller pas fungsi DELETE dan UBAH
+=========================================================================================================================================================
+use App\Http\Controllers\SiswaControler;
+
+Route::resource('/siswa',SiswaController::class);
+
+
+3. READ
+
+    ...index(){
+        return view('siswa',['siswa'=>Siswa::all()]);
+       }
+       
+    @foreach($siswa as $data)
+           <td> {{ $loop->iteration }} </td> 
+           <td> {{ $data->nama }} </td>
+    @endforeach
+    
+    
+4. SHOW
+    
+    href="/siswa/{{ $data->id }}"
+    
+    ...show(Siswa $siswa){
+        return view('detailsiswa',['siswa'=>$siswa]);
+        }
+    <h2> $siswa->nama </h2>
+    <p> $siswa->alamat </p>
+    
+5. DELETE
+    
+    <form action="/siswa/{{ $data->id }} method="POST" d-inline enctype="multipart/form-data" 
+    @csrf
+    @method('delete')
+    <buuton submit>
+    
+    ...destroy(Siswa $siswa){
+        Siswa::destroy($siswa->id);
+        return redirect('/siswa)->with('success','data berhasil dihapus');
+        
+6. TAMBAH        
+    
+    
+    
+    
+    
+    
