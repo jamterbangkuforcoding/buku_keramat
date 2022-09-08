@@ -14,6 +14,9 @@ MENGGUNAKAN RESOURCE CONTROLLER
   - Providers\RouteServicesProvider -> /home
   - use Illuminate\Support\Facades\Auth; -> unutk login
   - use Illuminate\Support\Facades\Storage; untuk storage gambar di controller pas fungsi DELETE dan UBAH
+  - enctype="multipart/from-data" -> untuk setiap from yang ada gambarnya 
+  
+  - di model -> protected $guarded=['id']; -> id jangan diisi / protected $fillable = ['nama','kelas']; -> harus diisi
 =========================================================================================================================================================
 use App\Http\Controllers\SiswaControler;
 
@@ -120,8 +123,80 @@ Route::resource('/siswa',SiswaController::class); -> satu untuk CRUD ;)
    
 =========================================================================================================================================================
    
+8. TAMBAH BERGAMBAR
+   
+   FILESYSTEM_DISK=public -> .env  -> agar folder yang kita buat berada didalam folder PUBLIC yang ada di folder storage/app/public
+   php artisan storage link -> unutk penghubungkan folder storage dengan publlic supaya gambarnya bisa di akses
+   {{ asset('storage/' . $data->gambar) }} -> unutk menampilkan gambar di dalam tag img tentunya
 
+   
+   'gambar' => 'image|required|file'
+   
+   $validasiData['gambar'] = $request->file('image')->store('image-siswa'); 
+   
+_______________________________________________________________________________________________________________________________________________________  
+   
+9. DELETE BERGAMBAR
+   use Illuminate\Support\Facades\Storage;
+   
+   if($siwa->image){
+      Storage::delete($siswa->image); (Unutuk menghapus gambar yang ada di storage/app/public)
+   }
+   
+      Siswa::destroy($siswa->id);  (unutk menghapus gambar yang ada di database)
+      
+_______________________________________________________________________________________________________________________________________________________   
 
+10. UBAH BERGAMBAR
+
+    input type="hidden" name="gambarlama" value="{{ $siswa->image }}" -> untuk mengirim gambar lama
+    input type="file" name="image"
+    <img src="{{ asset('storage/' .$siswa->image) }}">
+    
+    if($request->file('image')){
+        if($request->gambarlama){
+          Storage::delete($request->gambarlama); -> unutk menghapus gambar lama
+        }
+        
+        $validasiData['image'] = $request->file('image')->store('siswa-image');  -> menambahkan gambar baru di storage/app/public/siswa-image
+    }
+    
+    Siswa::where('id',$siswa->id)->update($validasiData); -> menambahkan data ke database
+        
+=========================================================================================================================================================
+    
+11. TAMBAHAN
+
+    //dalam input
+    autofocus
+    required
+    placeholder=""
+    autocomplete="off"
+    value="{{ old('nama') }}"
+    @error('nama') is-invalid @endrror
+    
+    //luar input pake invalid-feedback
+    @error('nama')
+      {{ $message }} 
+    @enderror
+    
+    //pake alert bootsrap
+    @if(session()->has('success'))
+        {{ session('success') }}
+        
+    @endif
+    
+    //di dalam class
+    {{ Request::is('dashboard*') ? 'active' : '' }}
+    
+    
+    //tampil setelah login
+    {{ auth()->user()->nama }}
+    {{ asset('storage/' .Auth::user()->image) }}
+    
+    
+    
+    
 
 
 
