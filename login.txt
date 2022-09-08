@@ -1,0 +1,103 @@
+1. LOGIN TANPA REGISTER
+ 
+   pake controller biasa
+   LoginController
+   
+   use Illuminate\Support\Facades\Auth;
+   
+   <form action="/login" method="post">
+   @csrf
+   name=""
+   
+   
+   ...login(Request $request){
+      if(Auth::attempt($request->only('username','password'))){
+        $request->sesion()->regenerate();
+        return redirect()->intended('/dashboard');
+      }
+      
+      return back()->with('','');
+   
+   }
+   
+   php artisan tinker
+   $user = new App\Models\User;
+   $user->username = ""
+   $user->passsword = bcrypt("")
+   $user->remember_Token = Str::random(50)
+   $user->save()
+   
+2. REGISTER
+    
+    RegisterController
+    
+   /register post
+   @csrf
+   name=""
+   
+   ...register(Request $request){
+      $validasiData = $request->validate([
+      'name' => 'required|min:3|max:255',
+      'username' => 'required|min:3|max:255|unique:users',
+      'password' => 'required|min:3|max:255'
+      ]);
+      
+      $validasiData['password'] = bcrypt($validasiData['password']);
+      User::create($validasiData);
+      return redirect('/login')->with('','');
+   }
+   
+3. LOGIN
+
+    LoginController
+    
+   /login post
+   @csrf
+   name=""
+   
+   ...login(Request $request){
+      $validasiData = $request->validate([
+      
+      'username' => 'required',
+      'password' => 'required'
+      
+      ]);   
+      
+      if(Auth::attempt($validasiData)){
+         $request->session()->regenarte();
+         return redirect()->intended('/dashboard');
+      }
+      
+      return back()->with('','');
+   
+   }
+   
+4. LOGOUT
+   
+   LoginController
+   /logout post
+   @csrf
+   
+   ...logout(Request $request){
+      Auth::logout();
+      
+      $request->session->invalidate(); -> supaya gak bisa dipake
+      $request->session->regenerateToken(); -> buat baru supaya gak dibajak
+      return redirect('/login');
+   }
+   
+
+ROUTE
+
+
+Route::get('/register',[RegisterController::class,'index']); -> tampilan
+Route::post('/register',[RegisterController::class,'register']); -> fungsi register
+
+Route::get('/login',[LoginController::class,'index']);  -> tampilan
+Route::post('/login',[LoginController::class,'login']);  -> fungsi login
+Route::post('/logout',[LoginController::class,'logout']); -> fungsi logout
+   
+   
+   
+   
+   
