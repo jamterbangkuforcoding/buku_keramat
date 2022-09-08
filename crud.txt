@@ -153,6 +153,8 @@ ________________________________________________________________________________
     input type="file" name="image"
     <img src="{{ asset('storage/' .$siswa->image) }}">
     
+    'image' => 'image'
+    
     if($request->file('image')){
         if($request->gambarlama){
           Storage::delete($request->gambarlama); -> unutk menghapus gambar lama
