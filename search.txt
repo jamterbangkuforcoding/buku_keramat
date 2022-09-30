@@ -1,0 +1,21 @@
+form action="/siswa"  method="GET"
+input-group  name=search value="{{ request('search) }}" 
+</form>
+
+...index(){
+$siswa = Siswa::latest();  // ditampilkan berdasar yang paling baru
+
+if( request('search')){
+  $siswa->where('nama','like','%' . request('search') . '%')
+        ->orWhere('alamat','like','%' .request('search') . '%');
+}
+
+return view('siswa',['siswa'=> $siswa->get() ]);  //biasa
+
+return view('siswa',['siswa'=> $siswa->paginate(5) ]); //pake pagination
+
+
+
+
+
+}
