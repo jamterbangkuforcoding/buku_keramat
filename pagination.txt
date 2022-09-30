@@ -1,0 +1,15 @@
+simplePaginate()
+paginate()
+
+AppServiceProvider.php
+use Illuminate\Pagination\Paginator;
+
+public function boot(){
+
+      Paginator::useBootstrapFive(); / Four
+}
+
+$siswa as $key => $data
+{{ $siswa->firstitem() + $key }}  // agar nomer tetap berjalan
+
+{{ $siswa->links() }}    //agar ada tombol pagination
