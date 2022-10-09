@@ -1,0 +1,24 @@
+use App\Models\User;
+
+
+public function run(){
+
+User::create([
+'name' => 'irfan abdul malik',
+'username => 'admin',
+'password' => bcrypt('123')
+]);
+
+
+User::create([
+'name' => 'irfan abdul malik',
+'username => 'admin2',
+'password' => bcrypt('123456')
+]);
+
+}
+
+
+cara save(nambahkan ke databasenya) dengan cara buka terminal dan ketik
+
+php artisan db:seed
