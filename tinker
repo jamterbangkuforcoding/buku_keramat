@@ -1,0 +1,8 @@
+php artisan tinker
+
+$user = new App\Models\User;
+
+$user->name = "Irfan Abdul Malik"
+$user->username = "admin"
+$user->password = bcrypt("123")
+$user->save()
