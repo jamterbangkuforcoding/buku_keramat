@@ -1,0 +1,10 @@
+a href="/logout"
+
+route::get('/logout',[LoginController::class,'logout']);
+
+
+...logout(){
+Auth::logout()
+return redirect('/beranda');
+
+}
