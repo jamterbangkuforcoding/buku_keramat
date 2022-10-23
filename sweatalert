@@ -1,0 +1,21 @@
+Installation ========
+
+composer require realrashid/sweet-alert   >>> di terminal
+RealRashid\SweetAlert\SweetAlertServiceProvider::class,  >>> config / app.php  >>> 'providers' =>
+'Alert' => RealRashid\SweetAlert\Facades\Alert::class,  >>> config / app.php >>> 'aliases' =>
+
+
+Configuration ========
+
+@include('sweetalert::alert')  >>> simpan di master
+php artisan sweetalert:publish >>> di terminal
+
+Middleware ======
+
+\RealRashid\SweetAlert\ToSweetAlert::class,  >>> app/Http/Kernel.php >>> middlewareGroups
+
+
+penggunaan di controller
+
+return redirect('siswa')->with('success', 'Data berhasil disimpan');     >>> pesan ditengah
+return redirect('siswa')->with('toast_success', 'Data berhasil disimpan'); >>> pesan di atas kanan
